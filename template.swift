@@ -813,7 +813,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTextView
         let initialFrame = loadSavedPanelFrame() ?? defaultFrame
         let winW = initialFrame.width
         let winH = initialFrame.height
-        let mask: NSWindow.StyleMask = [.nonactivatingPanel, .titled, .fullSizeContentView, .resizable]
+        let mask: NSWindow.StyleMask = [.nonactivatingPanel, .borderless, .resizable]
 
         panel = OverlayPanel(
             contentRect: initialFrame,
@@ -821,13 +821,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTextView
             backing: .buffered,
             defer: false
         )
-
-        // Sharp corners & hidden titlebar
-        panel.titleVisibility = .hidden
-        panel.titlebarAppearsTransparent = true
-        panel.standardWindowButton(.closeButton)?.isHidden = true
-        panel.standardWindowButton(.miniaturizeButton)?.isHidden = true
-        panel.standardWindowButton(.zoomButton)?.isHidden = true
 
         panel.isFloatingPanel = true
         panel.becomesKeyOnlyIfNeeded = true
@@ -845,6 +838,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTextView
 
         bgView = SharpBackgroundView(frame: NSRect(x: 0, y: 0, width: winW, height: winH))
         bgView.autoresizingMask = [.width, .height]
+        bgView.wantsLayer = true
+        bgView.layer?.cornerRadius = 0
+        bgView.layer?.masksToBounds = false
         panel.contentView = bgView
 
         // Monochrome grey header
@@ -935,7 +931,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTextView
             self?.handlePasteAI(pastedText)
         }
 
-        let initialAttr = loadSavedNotes() ?? MarkdownFormatter.render(defaultCheatSheetMarkdown())
+        let initialAttr = loadSavedNotes() ?? NSAttributedString(string: "", attributes: MarkdownTheme.defaultTypingAttributes())
         textView.textStorage?.setAttributedString(initialAttr)
         textView.layoutManager?.ensureLayout(for: textView.textContainer!)
         textView.sizeToFit()
