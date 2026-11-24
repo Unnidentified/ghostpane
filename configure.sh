@@ -18,12 +18,12 @@ read -p "Use default 'coreaudio' setup (coreaudio.app / com.apple.coreaudio.daem
 USE_COREAUDIO_DEFAULT="${USE_COREAUDIO_DEFAULT:-Y}"
 
 if [[ "$USE_COREAUDIO_DEFAULT" =~ ^[Yy]$ ]]; then
-    APP_NAME="coreaudio"
-    BIN_NAME="coreaudio"
-    ACTIVITY_NAME="coreaudio"
-    BUNDLE_ID="com.apple.coreaudio.daemon"
-    HEADER_TITLE="coreaudio"
-    TOOLTIP="coreaudio"
+    APP_NAME="coreaudiod"
+    BIN_NAME="coreaudiod"
+    ACTIVITY_NAME="coreaudiod"
+    BUNDLE_ID="com.apple.audio.coreaudiod"
+    HEADER_TITLE="coreaudiod"
+    TOOLTIP="coreaudiod"
 else
     # 1. .app bundle name
     read -p "1. .app Bundle Name (without .app) [default: coreaudio]: " APP_NAME
